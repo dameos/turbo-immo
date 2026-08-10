@@ -17,10 +17,10 @@ the maps. Nothing to install, nothing to keep up to date.
 ## Usage
 
 ```bash
-python scripts/search_homes.py --postcode 9000 --max-price 500000 \
+python3 scripts/search_homes.py --postcode 9000 --max-price 500000 \
     --min-bedrooms 3 --min-surface 120 --out reports/gent/listings.json
 
-python scripts/build_report.py reports/gent/listings.json \
+python3 scripts/build_report.py reports/gent/listings.json \
     --out reports/gent/report.html
 ```
 
@@ -82,8 +82,8 @@ See [REFERENCE.md](REFERENCE.md) for the verified endpoint details and
 ## Tests
 
 ```bash
-python -m unittest discover -s tests     # 132 tests, no network
-python scripts/search_homes.py --self-check   # live probe of both sites
+python3 -m unittest discover -s tests     # 132 tests, no network
+python3 scripts/search_homes.py --self-check   # live probe of both sites
 ```
 
 Tests run against redacted fixtures (see
