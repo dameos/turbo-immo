@@ -1,0 +1,626 @@
+{
+ "places": {
+  "113": {
+   "id": 113,
+   "center": {
+    "latitude": 51.259487648845585,
+    "longitude": 4.371699233720733
+   },
+   "translations": {
+    "nl": "Antwerpen"
+   },
+   "slugs": {
+    "nl": "antwerpen"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Anvers"
+    }
+   ],
+   "administrativeArea": {
+    "id": "11002",
+    "placeId": 113,
+    "level": 8,
+    "name": "Antwerpen",
+    "slug": "antwerpen",
+    "postalCode": "2000",
+    "parentId": "10000"
+   },
+   "legacyLocalityId": 112
+  },
+  "72": {
+   "id": 72,
+   "center": {
+    "latitude": 50.88497,
+    "longitude": 4.35556
+   },
+   "translations": {
+    "nl": "Brussel",
+    "fr": "Bruxelles"
+   },
+   "slugs": {
+    "nl": "brussel",
+    "fr": "bruxelles"
+   },
+   "administrativeArea": {
+    "id": "21004",
+    "placeId": 72,
+    "level": 8,
+    "name": "Brussel",
+    "slug": "brussel",
+    "postalCode": "1000",
+    "parentId": "01000"
+   },
+   "legacyLocalityId": 1
+  },
+  "226": {
+   "id": 226,
+   "center": {
+    "latitude": 50.87524,
+    "longitude": 4.71101
+   },
+   "translations": {
+    "nl": "Leuven"
+   },
+   "slugs": {
+    "nl": "leuven"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Louvain"
+    }
+   ],
+   "administrativeArea": {
+    "id": "24062",
+    "placeId": 226,
+    "level": 8,
+    "name": "Leuven",
+    "slug": "leuven",
+    "postalCode": "3000",
+    "parentId": "20001"
+   },
+   "legacyLocalityId": 81
+  },
+  "256": {
+   "id": 256,
+   "center": {
+    "latitude": 51.21795,
+    "longitude": 3.2187
+   },
+   "translations": {
+    "nl": "Brugge"
+   },
+   "slugs": {
+    "nl": "brugge"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Bruges"
+    }
+   ],
+   "administrativeArea": {
+    "id": "31005",
+    "placeId": 256,
+    "level": 8,
+    "name": "Brugge",
+    "slug": "brugge",
+    "postalCode": "8000",
+    "parentId": "30000"
+   },
+   "legacyLocalityId": 462
+  },
+  "509": {
+   "id": 509,
+   "center": {
+    "latitude": 51.02828,
+    "longitude": 3.80787
+   },
+   "translations": {
+    "nl": "Destelbergen"
+   },
+   "slugs": {
+    "nl": "destelbergen"
+   },
+   "administrativeArea": {
+    "id": "44013",
+    "placeId": 509,
+    "level": 8,
+    "name": "Destelbergen",
+    "slug": "destelbergen",
+    "postalCode": "9070",
+    "parentId": "40000"
+   },
+   "legacyLocalityId": 528
+  },
+  "580": {
+   "id": 580,
+   "center": {
+    "latitude": 51.047,
+    "longitude": 3.70121
+   },
+   "translations": {
+    "nl": "Gent"
+   },
+   "slugs": {
+    "nl": "gent"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Gand"
+    }
+   ],
+   "administrativeArea": {
+    "id": "44021",
+    "placeId": 580,
+    "level": 8,
+    "name": "Gent",
+    "slug": "gent",
+    "postalCode": "9000",
+    "parentId": "40000"
+   },
+   "legacyLocalityId": 526
+  },
+  "159": {
+   "id": 159,
+   "center": {
+    "latitude": 50.63205,
+    "longitude": 5.58337
+   },
+   "translations": {
+    "fr": "Liège"
+   },
+   "slugs": {
+    "fr": "liege"
+   },
+   "aliases": [
+    {
+     "locale": "nl",
+     "name": "Luik"
+    }
+   ],
+   "administrativeArea": {
+    "id": "62063",
+    "placeId": 159,
+    "level": 8,
+    "name": "Liège",
+    "slug": "liege",
+    "postalCode": "4000",
+    "parentId": "60000"
+   },
+   "legacyLocalityId": 227
+  },
+  "597": {
+   "id": 597,
+   "center": {
+    "latitude": 51.22942,
+    "longitude": 4.38925
+   },
+   "translations": {
+    "nl": "Antwerpen"
+   },
+   "slugs": {
+    "nl": "antwerpen"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Anvers"
+    }
+   ],
+   "administrativeArea": {
+    "id": "11002-Z",
+    "placeId": 597,
+    "level": 9,
+    "name": "Antwerpen",
+    "slug": "antwerpen",
+    "postalCode": "2000",
+    "parentId": "11002"
+   }
+  },
+  "748": {
+   "id": 748,
+   "center": {
+    "latitude": 50.88497,
+    "longitude": 4.35556
+   },
+   "translations": {
+    "nl": "Brussel",
+    "fr": "Bruxelles"
+   },
+   "slugs": {
+    "nl": "brussel",
+    "fr": "bruxelles"
+   },
+   "administrativeArea": {
+    "id": "21004-Z",
+    "placeId": 748,
+    "level": 9,
+    "name": "Brussel",
+    "slug": "brussel",
+    "postalCode": "1000",
+    "parentId": "21004"
+   }
+  },
+  "942": {
+   "id": 942,
+   "center": {
+    "latitude": 50.87932,
+    "longitude": 4.69938
+   },
+   "translations": {
+    "nl": "Leuven"
+   },
+   "slugs": {
+    "nl": "leuven"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Louvain"
+    }
+   ],
+   "administrativeArea": {
+    "id": "24062A",
+    "placeId": 942,
+    "level": 9,
+    "name": "Leuven",
+    "slug": "leuven",
+    "postalCode": "3000",
+    "parentId": "24062"
+   },
+   "legacyId": 247
+  },
+  "1113": {
+   "id": 1113,
+   "center": {
+    "latitude": 51.23542,
+    "longitude": 3.20462
+   },
+   "translations": {
+    "nl": "Brugge"
+   },
+   "slugs": {
+    "nl": "brugge"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Bruges"
+    }
+   ],
+   "administrativeArea": {
+    "id": "31005A",
+    "placeId": 1113,
+    "level": 9,
+    "name": "Brugge",
+    "slug": "brugge",
+    "postalCode": "8000",
+    "parentId": "31005"
+   },
+   "legacyId": 2215
+  },
+  "1116": {
+   "id": 1116,
+   "center": {
+    "latitude": 51.23954,
+    "longitude": 3.24349
+   },
+   "translations": {
+    "nl": "Koolkerke"
+   },
+   "slugs": {
+    "nl": "koolkerke"
+   },
+   "administrativeArea": {
+    "id": "31005D",
+    "placeId": 1116,
+    "level": 9,
+    "name": "Koolkerke",
+    "slug": "koolkerke",
+    "postalCode": "8000",
+    "parentId": "31005"
+   },
+   "legacyId": 2216
+  },
+  "1494": {
+   "id": 1494,
+   "center": {
+    "latitude": 51.06751,
+    "longitude": 3.82391
+   },
+   "translations": {
+    "nl": "Destelbergen"
+   },
+   "slugs": {
+    "nl": "destelbergen"
+   },
+   "administrativeArea": {
+    "id": "44013A",
+    "placeId": 1494,
+    "level": 9,
+    "name": "Destelbergen",
+    "slug": "destelbergen",
+    "postalCode": "9070",
+    "parentId": "44013"
+   },
+   "legacyId": 2485
+  },
+  "1495": {
+   "id": 1495,
+   "center": {
+    "latitude": 51.02713,
+    "longitude": 3.8073
+   },
+   "translations": {
+    "nl": "Heusden"
+   },
+   "slugs": {
+    "nl": "heusden"
+   },
+   "administrativeArea": {
+    "id": "44013B",
+    "placeId": 1495,
+    "level": 9,
+    "name": "Heusden",
+    "slug": "heusden",
+    "postalCode": "9070",
+    "parentId": "44013"
+   },
+   "legacyId": 2486
+  },
+  "1506": {
+   "id": 1506,
+   "center": {
+    "latitude": 51.04506,
+    "longitude": 3.71517
+   },
+   "translations": {
+    "nl": "Gent"
+   },
+   "slugs": {
+    "nl": "gent"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Gand"
+    }
+   ],
+   "administrativeArea": {
+    "id": "44021-Z",
+    "placeId": 1506,
+    "level": 9,
+    "name": "Gent",
+    "slug": "gent",
+    "postalCode": "9000",
+    "parentId": "44021"
+   },
+   "legacyId": 2470
+  },
+  "1511": {
+   "id": 1511,
+   "center": {
+    "latitude": 51.06729,
+    "longitude": 3.75706
+   },
+   "translations": {
+    "nl": "Sint-Amandsberg"
+   },
+   "slugs": {
+    "nl": "sint-amandsberg"
+   },
+   "administrativeArea": {
+    "id": "44021E",
+    "placeId": 1511,
+    "level": 9,
+    "name": "Sint-Amandsberg",
+    "slug": "sint-amandsberg",
+    "postalCode": "9040",
+    "parentId": "44021"
+   },
+   "legacyId": 2474
+  },
+  "1512": {
+   "id": 1512,
+   "center": {
+    "latitude": 51.0383,
+    "longitude": 3.76948
+   },
+   "translations": {
+    "nl": "Gentbrugge"
+   },
+   "slugs": {
+    "nl": "gentbrugge"
+   },
+   "administrativeArea": {
+    "id": "44021F",
+    "placeId": 1512,
+    "level": 9,
+    "name": "Gentbrugge",
+    "slug": "gentbrugge",
+    "postalCode": "9050",
+    "parentId": "44021"
+   },
+   "legacyId": 2479
+  },
+  "1513": {
+   "id": 1513,
+   "center": {
+    "latitude": 51.03625,
+    "longitude": 3.74723
+   },
+   "translations": {
+    "nl": "Ledeberg"
+   },
+   "slugs": {
+    "nl": "ledeberg"
+   },
+   "administrativeArea": {
+    "id": "44021G",
+    "placeId": 1513,
+    "level": 9,
+    "name": "Ledeberg",
+    "slug": "ledeberg",
+    "postalCode": "9050",
+    "parentId": "44021"
+   },
+   "legacyId": 2480
+  },
+  "2222": {
+   "id": 2222,
+   "center": {
+    "latitude": 50.64448,
+    "longitude": 5.57067
+   },
+   "translations": {
+    "fr": "Liège"
+   },
+   "slugs": {
+    "fr": "liege"
+   },
+   "aliases": [
+    {
+     "locale": "nl",
+     "name": "Luik"
+    }
+   ],
+   "administrativeArea": {
+    "id": "62063-Z",
+    "placeId": 2222,
+    "level": 9,
+    "name": "Liège",
+    "slug": "liege",
+    "postalCode": "4000",
+    "parentId": "62063"
+   },
+   "legacyId": 761
+  },
+  "2229": {
+   "id": 2229,
+   "center": {
+    "latitude": 50.64575,
+    "longitude": 5.53552
+   },
+   "translations": {
+    "fr": "Glain"
+   },
+   "slugs": {
+    "fr": "glain"
+   },
+   "administrativeArea": {
+    "id": "62063K",
+    "placeId": 2229,
+    "level": 9,
+    "name": "Glain",
+    "slug": "glain",
+    "postalCode": "4000",
+    "parentId": "62063"
+   },
+   "legacyId": 760
+  },
+  "2230": {
+   "id": 2230,
+   "center": {
+    "latitude": 50.67476,
+    "longitude": 5.55423
+   },
+   "translations": {
+    "fr": "Rocourt"
+   },
+   "slugs": {
+    "fr": "rocourt"
+   },
+   "administrativeArea": {
+    "id": "62063L",
+    "placeId": 2230,
+    "level": 9,
+    "name": "Rocourt",
+    "slug": "rocourt",
+    "postalCode": "4000",
+    "parentId": "62063"
+   },
+   "legacyId": 762
+  },
+  "3270": {
+   "id": 3270,
+   "center": {
+    "latitude": 51.22028,
+    "longitude": 4.40607
+   },
+   "translations": {
+    "nl": "Antwerpen"
+   },
+   "slugs": {
+    "nl": "antwerpen"
+   },
+   "aliases": [
+    {
+     "locale": "fr",
+     "name": "Anvers"
+    }
+   ],
+   "administrativeArea": {
+    "id": "11002A000",
+    "placeId": 3270,
+    "level": 10,
+    "name": "Antwerpen",
+    "slug": "antwerpen",
+    "postalCode": "2000",
+    "parentId": "11002-Z"
+   },
+   "legacyId": 382
+  },
+  "3263": {
+   "id": 3263,
+   "center": {
+    "latitude": 50.82104,
+    "longitude": 4.36821
+   },
+   "translations": {
+    "nl": "Brussel",
+    "fr": "Bruxelles"
+   },
+   "slugs": {
+    "nl": "brussel",
+    "fr": "bruxelles"
+   },
+   "administrativeArea": {
+    "id": "21004A001",
+    "placeId": 3263,
+    "level": 10,
+    "name": "Brussel",
+    "slug": "brussel",
+    "postalCode": "1000",
+    "parentId": "21004-Z"
+   },
+   "legacyId": 1
+  },
+  "3322": {
+   "id": 3322,
+   "center": {
+    "latitude": 51.2243092,
+    "longitude": 3.2104001
+   },
+   "translations": {
+    "nl": "Sint-Pieters"
+   },
+   "slugs": {
+    "nl": "sint-pieters"
+   },
+   "administrativeArea": {
+    "id": "31005A37-",
+    "placeId": 3322,
+    "level": 10,
+    "name": "Sint-Pieters",
+    "slug": "sint-pieters",
+    "postalCode": "8000",
+    "parentId": "31005A"
+   },
+   "legacyId": 2781
+  }
+ }
+}

@@ -1,0 +1,583 @@
+{
+ "criteria": {
+  "countries": "BE",
+  "postalCodes": [
+   {
+    "queryValue": "9000",
+    "queryParam": "postalCodes",
+    "slug": "gent",
+    "shortLabel": "Gent (9000)",
+    "label": "Gent (9000)",
+    "translations": {
+     "fr": "Gand",
+     "en": "Gent",
+     "nl": "Gent"
+    }
+   }
+  ],
+  "propertyTypes": "HOUSE",
+  "transactionTypes": "FOR_SALE",
+  "page": "1"
+ },
+ "sort": "relevance",
+ "results": [
+  {
+   "id": 10000001,
+   "cluster": {
+    "minPrice": null,
+    "maxPrice": null,
+    "minRoom": null,
+    "maxRoom": null,
+    "minSurface": null,
+    "maxSurface": null,
+    "projectInfo": null,
+    "bedroomRange": "",
+    "surfaceRange": ""
+   },
+   "customerLogoUrl": "https://example.invalid/logo.png",
+   "customerName": "Agency Alpha",
+   "flags": {
+    "main": "new",
+    "secondary": [],
+    "percentSold": null
+   },
+   "media": {
+    "pictures": [
+     {
+      "smallUrl": "https://example.invalid/photos/0/0/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/0/0/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/0/0/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/0/0/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/0/1/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/0/1/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/0/1/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/0/1/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/0/2/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/0/2/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/0/2/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/0/2/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/0/3/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/0/3/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/0/3/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/0/3/extralargeUrl.jpg",
+      "isVertical": false
+     }
+    ],
+    "externalVideoUrl": null,
+    "externalVideoThumbnailUrl": null
+   },
+   "property": {
+    "type": "HOUSE",
+    "subtype": "HOUSE",
+    "title": null,
+    "bedroomCount": 4,
+    "location": {
+     "country": "Belgium",
+     "region": "Flanders",
+     "province": "East Flanders",
+     "district": "Gent",
+     "locality": "Gent",
+     "postalCode": "9000",
+     "street": "Voorbeeldstraat 10",
+     "number": "10",
+     "box": null,
+     "propertyName": "0",
+     "floor": null,
+     "latitude": 51.03,
+     "longitude": 3.72,
+     "distance": null,
+     "approximated": null,
+     "regionCode": "FLANDERS",
+     "type": null,
+     "hasSeaView": null,
+     "pointsOfInterest": null,
+     "placeName": null
+    },
+    "netHabitableSurface": 197,
+    "landSurface": 0,
+    "roomCount": 13
+   },
+   "publication": {
+    "publisherId": null,
+    "visualisationOption": "XL",
+    "detailedPageVisibility": "CLASSIC",
+    "size": "xl",
+    "creationDate": null,
+    "lastModificationDate": "2026-08-09T18:59:47.041Z"
+   },
+   "transaction": {
+    "certificateLogoUrl": null,
+    "certificate": null,
+    "hidePrice": null,
+    "type": "FOR_SALE",
+    "rental": null,
+    "sale": {
+     "lifeAnnuity": null,
+     "hasStartingPrice": false,
+     "oldPrice": null,
+     "price": 499000,
+     "pricePerSqm": null,
+     "publicSale": null,
+     "toBuild": null,
+     "isSubjectToVat": null
+    }
+   },
+   "priceType": null,
+   "price": {
+    "type": "residential_sale",
+    "mainValue": 499000,
+    "alternativeValue": null,
+    "additionalValue": null,
+    "oldValue": null,
+    "minRangeValue": null,
+    "maxRangeValue": null,
+    "mainDisplayPrice": "€499,000",
+    "HTMLDisplayPrice": "<span aria-hidden=\"true\">€499,000</span>",
+    "alternativeDisplayPrice": "",
+    "oldDisplayPrice": null,
+    "shortDisplayPrice": "€499K",
+    "accessibilityPrice": "499000€",
+    "label": "Price",
+    "date": null,
+    "language": "en",
+    "hidePrice": false
+   },
+   "isBookmarked": false,
+   "has360Tour": null,
+   "hasVirtualTour": null,
+   "hasVideo": null,
+   "advertisementId": "REDACTED"
+  },
+  {
+   "id": 10000002,
+   "cluster": {
+    "minPrice": null,
+    "maxPrice": null,
+    "minRoom": null,
+    "maxRoom": null,
+    "minSurface": null,
+    "maxSurface": null,
+    "projectInfo": null,
+    "bedroomRange": "",
+    "surfaceRange": ""
+   },
+   "customerLogoUrl": "https://example.invalid/logo.png",
+   "customerName": "Agency Beta",
+   "flags": {
+    "main": "new",
+    "secondary": [],
+    "percentSold": null
+   },
+   "media": {
+    "pictures": [
+     {
+      "smallUrl": "https://example.invalid/photos/1/0/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/1/0/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/1/0/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/1/0/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/1/1/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/1/1/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/1/1/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/1/1/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/1/2/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/1/2/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/1/2/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/1/2/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/1/3/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/1/3/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/1/3/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/1/3/extralargeUrl.jpg",
+      "isVertical": false
+     }
+    ],
+    "externalVideoUrl": null,
+    "externalVideoThumbnailUrl": null
+   },
+   "property": {
+    "type": "HOUSE",
+    "subtype": "HOUSE",
+    "title": "A 4bedroom house in need of renovation with a garden in Gent",
+    "bedroomCount": 4,
+    "location": {
+     "country": "Belgium",
+     "region": "Flanders",
+     "province": "East Flanders",
+     "district": "Gent",
+     "locality": "Gent",
+     "postalCode": "9000",
+     "street": "Proefdreef 17",
+     "number": "17",
+     "box": null,
+     "propertyName": null,
+     "floor": null,
+     "latitude": 51.09,
+     "longitude": 3.72,
+     "distance": null,
+     "approximated": null,
+     "regionCode": "FLANDERS",
+     "type": null,
+     "hasSeaView": null,
+     "pointsOfInterest": null,
+     "placeName": "Oost-Vlaanderen"
+    },
+    "netHabitableSurface": 132,
+    "landSurface": 115,
+    "roomCount": null
+   },
+   "publication": {
+    "publisherId": null,
+    "visualisationOption": "XL",
+    "detailedPageVisibility": "CLASSIC",
+    "size": "xl",
+    "creationDate": null,
+    "lastModificationDate": "2026-08-09T01:00:55.591Z"
+   },
+   "transaction": {
+    "certificateLogoUrl": null,
+    "certificate": null,
+    "hidePrice": null,
+    "type": "FOR_SALE",
+    "rental": null,
+    "sale": {
+     "lifeAnnuity": null,
+     "hasStartingPrice": null,
+     "oldPrice": null,
+     "price": 249500,
+     "pricePerSqm": null,
+     "publicSale": null,
+     "toBuild": null,
+     "isSubjectToVat": null
+    }
+   },
+   "priceType": null,
+   "price": {
+    "type": "residential_sale",
+    "mainValue": 249500,
+    "alternativeValue": null,
+    "additionalValue": null,
+    "oldValue": null,
+    "minRangeValue": null,
+    "maxRangeValue": null,
+    "mainDisplayPrice": "€249,500",
+    "HTMLDisplayPrice": "<span aria-hidden=\"true\">€249,500</span>",
+    "alternativeDisplayPrice": "",
+    "oldDisplayPrice": null,
+    "shortDisplayPrice": "€249.5K",
+    "accessibilityPrice": "249500€",
+    "label": "Price",
+    "date": null,
+    "language": "en",
+    "hidePrice": false
+   },
+   "isBookmarked": false,
+   "has360Tour": null,
+   "hasVirtualTour": null,
+   "hasVideo": null,
+   "advertisementId": "REDACTED"
+  },
+  {
+   "id": 10000003,
+   "cluster": {
+    "minPrice": null,
+    "maxPrice": null,
+    "minRoom": null,
+    "maxRoom": null,
+    "minSurface": null,
+    "maxSurface": null,
+    "projectInfo": null,
+    "bedroomRange": "",
+    "surfaceRange": ""
+   },
+   "customerLogoUrl": "https://example.invalid/logo.png",
+   "customerName": "Agency Gamma",
+   "flags": {
+    "main": "new",
+    "secondary": [],
+    "percentSold": null
+   },
+   "media": {
+    "pictures": [
+     {
+      "smallUrl": "https://example.invalid/photos/2/0/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/2/0/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/2/0/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/2/0/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/2/1/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/2/1/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/2/1/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/2/1/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/2/2/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/2/2/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/2/2/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/2/2/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/2/3/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/2/3/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/2/3/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/2/3/extralargeUrl.jpg",
+      "isVertical": false
+     }
+    ],
+    "externalVideoUrl": null,
+    "externalVideoThumbnailUrl": null
+   },
+   "property": {
+    "type": "HOUSE",
+    "subtype": "HOUSE",
+    "title": "Move-in Ready 3-Bedroom House Near Ghent City Centre",
+    "bedroomCount": 3,
+    "location": {
+     "country": "Belgium",
+     "region": "Flanders",
+     "province": "East Flanders",
+     "district": "Gent",
+     "locality": "Gent",
+     "postalCode": "9000",
+     "street": "Testkaai 24",
+     "number": "24",
+     "box": null,
+     "propertyName": null,
+     "floor": null,
+     "latitude": 51.06,
+     "longitude": 3.71,
+     "distance": null,
+     "approximated": null,
+     "regionCode": "FLANDERS",
+     "type": null,
+     "hasSeaView": null,
+     "pointsOfInterest": null,
+     "placeName": "Oost-Vlaanderen"
+    },
+    "netHabitableSurface": 75,
+    "landSurface": 36,
+    "roomCount": null
+   },
+   "publication": {
+    "publisherId": null,
+    "visualisationOption": "XL",
+    "detailedPageVisibility": "CLASSIC",
+    "size": "xl",
+    "creationDate": null,
+    "lastModificationDate": "2026-08-10T09:07:16.070Z"
+   },
+   "transaction": {
+    "certificateLogoUrl": null,
+    "certificate": null,
+    "hidePrice": null,
+    "type": "FOR_SALE",
+    "rental": null,
+    "sale": {
+     "lifeAnnuity": null,
+     "hasStartingPrice": null,
+     "oldPrice": null,
+     "price": 369000,
+     "pricePerSqm": null,
+     "publicSale": null,
+     "toBuild": null,
+     "isSubjectToVat": null
+    }
+   },
+   "priceType": null,
+   "price": {
+    "type": "residential_sale",
+    "mainValue": 369000,
+    "alternativeValue": null,
+    "additionalValue": null,
+    "oldValue": null,
+    "minRangeValue": null,
+    "maxRangeValue": null,
+    "mainDisplayPrice": "€369,000",
+    "HTMLDisplayPrice": "<span aria-hidden=\"true\">€369,000</span>",
+    "alternativeDisplayPrice": "",
+    "oldDisplayPrice": null,
+    "shortDisplayPrice": "€369K",
+    "accessibilityPrice": "369000€",
+    "label": "Price",
+    "date": null,
+    "language": "en",
+    "hidePrice": false
+   },
+   "isBookmarked": false,
+   "has360Tour": null,
+   "hasVirtualTour": null,
+   "hasVideo": null,
+   "advertisementId": "REDACTED"
+  },
+  {
+   "id": 10000004,
+   "cluster": {
+    "minPrice": null,
+    "maxPrice": null,
+    "minRoom": null,
+    "maxRoom": null,
+    "minSurface": null,
+    "maxSurface": null,
+    "projectInfo": null,
+    "bedroomRange": "",
+    "surfaceRange": ""
+   },
+   "customerLogoUrl": "https://example.invalid/logo.png",
+   "customerName": "Agency Delta",
+   "flags": {
+    "main": "new",
+    "secondary": [],
+    "percentSold": null
+   },
+   "media": {
+    "pictures": [
+     {
+      "smallUrl": "https://example.invalid/photos/3/0/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/3/0/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/3/0/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/3/0/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/3/1/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/3/1/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/3/1/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/3/1/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/3/2/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/3/2/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/3/2/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/3/2/extralargeUrl.jpg",
+      "isVertical": false
+     },
+     {
+      "smallUrl": "https://example.invalid/photos/3/3/smallUrl.jpg",
+      "mediumUrl": "https://example.invalid/photos/3/3/mediumUrl.jpg",
+      "largeUrl": "https://example.invalid/photos/3/3/largeUrl.jpg",
+      "extralargeUrl": "https://example.invalid/photos/3/3/extralargeUrl.jpg",
+      "isVertical": false
+     }
+    ],
+    "externalVideoUrl": null,
+    "externalVideoThumbnailUrl": null
+   },
+   "property": {
+    "type": "HOUSE",
+    "subtype": "HOUSE",
+    "title": "3-bedroom townhouse near the historic center.",
+    "bedroomCount": 3,
+    "location": {
+     "country": "Belgium",
+     "region": "Flanders",
+     "province": "East Flanders",
+     "district": "Gent",
+     "locality": "Gent",
+     "postalCode": "9000",
+     "street": "Modellaan 31",
+     "number": "31",
+     "box": null,
+     "propertyName": null,
+     "floor": null,
+     "latitude": 51.06,
+     "longitude": 3.7,
+     "distance": null,
+     "approximated": null,
+     "regionCode": "FLANDERS",
+     "type": null,
+     "hasSeaView": null,
+     "pointsOfInterest": null,
+     "placeName": "Oost-Vlaanderen"
+    },
+    "netHabitableSurface": 134,
+    "landSurface": 66,
+    "roomCount": null
+   },
+   "publication": {
+    "publisherId": null,
+    "visualisationOption": "XL",
+    "detailedPageVisibility": "CLASSIC",
+    "size": "xl",
+    "creationDate": null,
+    "lastModificationDate": "2026-08-10T09:07:15.821Z"
+   },
+   "transaction": {
+    "certificateLogoUrl": null,
+    "certificate": null,
+    "hidePrice": null,
+    "type": "FOR_SALE",
+    "rental": null,
+    "sale": {
+     "lifeAnnuity": null,
+     "hasStartingPrice": false,
+     "oldPrice": null,
+     "price": 476000,
+     "pricePerSqm": null,
+     "publicSale": null,
+     "toBuild": null,
+     "isSubjectToVat": null
+    }
+   },
+   "priceType": null,
+   "price": {
+    "type": "residential_sale",
+    "mainValue": 476000,
+    "alternativeValue": null,
+    "additionalValue": null,
+    "oldValue": null,
+    "minRangeValue": null,
+    "maxRangeValue": null,
+    "mainDisplayPrice": "€476,000",
+    "HTMLDisplayPrice": "<span aria-hidden=\"true\">€476,000</span>",
+    "alternativeDisplayPrice": "",
+    "oldDisplayPrice": null,
+    "shortDisplayPrice": "€476K",
+    "accessibilityPrice": "476000€",
+    "label": "Price",
+    "date": null,
+    "language": "en",
+    "hidePrice": false
+   },
+   "isBookmarked": false,
+   "has360Tour": null,
+   "hasVirtualTour": null,
+   "hasVideo": null,
+   "advertisementId": "REDACTED"
+  }
+ ],
+ "resultsStorage": [
+  10000001,
+  10000002,
+  10000003,
+  10000004
+ ],
+ "range": "0-29",
+ "marketingCount": 376,
+ "count": 376,
+ "geoPointCount": 362,
+ "labellizedSearch": "House for sale - Gent (9000) - 376 properties",
+ "totalItems": 376,
+ "currentPage": 1,
+ "hasPremiumPosition": true
+}
