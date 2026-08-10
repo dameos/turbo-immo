@@ -39,6 +39,8 @@ or re-hitting the sites.
 --sort price|price_per_m2|surface|bedrooms
 --limit N              optional cap; by default every match is reported
 --max-enrich N         listing pages read to recover missing bedroom counts (default 40)
+--max-availability N   listing pages read for a move-in date, rent only (default 200)
+--no-availability      skip the move-in date lookup
 --self-check           live PASS/FAIL per source
 ```
 
@@ -50,6 +52,7 @@ or re-hitting the sites.
 | Server-side filters | price, bedrooms, surface, land | **none** — place and category only |
 | Coordinates | yes | yes |
 | EPC label | no | yes |
+| Availability | detail page only, ISO date | detail page only, `Vrij op` |
 | Per page | 31 | 21 |
 
 Filters are pushed to the sites where supported and then **re-applied locally**,
@@ -60,6 +63,13 @@ De-duplication runs in two passes: everything with a real street address merges
 on address alone, then address-less listings attach via a weaker
 postcode+price+bedrooms+surface key. Two addressed listings never merge on specs,
 so houses that coincidentally share those four values stay separate.
+
+Neither site publishes a move-in date in its search results, so on a **rent**
+search each listing's own page is read for one — Immoweb's structured
+`availabilityDate`, or Zimmo's `Vrij op` row. That runs after filtering, so it
+never pays for a listing the report won't show, and a date already in the past
+renders as "Free now" with the published value in the tooltip: adverts go stale,
+and "Free 1 Mar 2025" looks like a bug rather than an old listing.
 
 Maps are OpenStreetMap tiles with **no API key and no image library**: the
 smallest covering tile rectangle is laid out in a grid and shifted by CSS so the
@@ -72,7 +82,7 @@ See [REFERENCE.md](REFERENCE.md) for the verified endpoint details and
 ## Tests
 
 ```bash
-python -m unittest discover -s tests     # 65 tests, no network
+python -m unittest discover -s tests     # 132 tests, no network
 python scripts/search_homes.py --self-check   # live probe of both sites
 ```
 

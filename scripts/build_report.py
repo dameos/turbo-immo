@@ -12,6 +12,7 @@ import argparse
 import html
 import json
 import sys
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -63,37 +64,88 @@ _BEDROOM_ORIGIN = {
 }
 
 
-def chips_html(listing: Listing) -> str:
-    chips = []
+_MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+
+def report_date(data: dict) -> date:
+    """The date the report is *about*, taken from the report itself.
+
+    Everything date-dependent hangs off this rather than the clock, so
+    rebuilding a listings.json months later reproduces the same HTML. Only a
+    hand-written JSON with no `generated_at` falls back to today.
+    """
+    try:
+        return date.fromisoformat((data.get("generated_at") or "")[:10])
+    except ValueError:
+        return date.today()
+
+
+def availability_chip(listing: Listing, today: date) -> tuple[str, str] | None:
+    """(label, tooltip) for when the property is free, or None if unpublished.
+
+    A date that has already passed becomes "Free now": the flat is available,
+    the advert is merely stale, and printing "Free 15 Jun" in August reads as a
+    bug. The published value stays in the tooltip so nothing is hidden.
+    """
+    if listing.available_immediately:
+        return "Free now", "Available immediately"
+    if not listing.available_from:
+        return None
+    try:
+        when = date.fromisoformat(listing.available_from)
+    except ValueError:
+        # One malformed field must not cost the whole report.
+        return None
+
+    if when <= today:
+        return "Free now", "Published as available from %s" % listing.available_from
+    label = "Free %d %s" % (when.day, _MONTHS[when.month - 1])
+    if when.year != today.year:
+        label += " %d" % when.year
+    return label, "Available from %s" % listing.available_from
+
+
+def _chip_specs(listing: Listing, today: date) -> list[tuple[str, str, str]]:
+    """Every chip except the bedroom count, as (css class, text, tooltip).
+
+    Deliberately one list rather than one per caller: the bedroom chip has two
+    renderings, and a second copy of this list is how a new chip goes missing
+    from exactly half the cards.
+    """
+    specs = []
+    if listing.habitable_m2:
+        specs.append(("", "%d m²" % listing.habitable_m2, ""))
+    if listing.land_m2:
+        specs.append(("", "%d m² land" % listing.land_m2, ""))
+    if listing.epc:
+        specs.append(("epc", "EPC %s" % listing.epc, ""))
+    available = availability_chip(listing, today)
+    if available:
+        specs.append(("avail", available[0], available[1]))
+    return specs
+
+
+def _render_chips(specs: list[tuple[str, str, str]]) -> str:
+    out = []
+    for cls, text, title in specs:
+        attr = ' title="%s"' % html.escape(title) if title else ""
+        out.append('<span class="chip %s"%s>%s</span>'
+                   % (cls, attr, html.escape(text)))
+    return "".join(out)
+
+
+def chips_html(listing: Listing, today: date) -> str:
     if listing.bedrooms is not None and listing.bedrooms_source != "listed":
         # Never render a recovered figure as if the site had published it.
         label = "studio" if listing.bedrooms == 0 else "~%d bed" % listing.bedrooms
-        note = _BEDROOM_ORIGIN.get(listing.bedrooms_source, "Estimated")
-        return ('<span class="chip est" title="%s">%s</span>' % (html.escape(note), label)
-                + _rest_of_chips(listing))
-    if listing.bedrooms:
-        chips.append(("", "%d bed" % listing.bedrooms))
-    if listing.habitable_m2:
-        chips.append(("", "%d m²" % listing.habitable_m2))
-    if listing.land_m2:
-        chips.append(("", "%d m² land" % listing.land_m2))
-    if listing.epc:
-        chips.append(("epc", "EPC %s" % listing.epc))
-    return "".join('<span class="chip %s">%s</span>' % (cls, html.escape(text))
-                   for cls, text in chips)
-
-
-def _rest_of_chips(listing: Listing) -> str:
-    """The non-bedroom chips, for when the bedroom chip is rendered separately."""
-    chips = []
-    if listing.habitable_m2:
-        chips.append(("", "%d m²" % listing.habitable_m2))
-    if listing.land_m2:
-        chips.append(("", "%d m² land" % listing.land_m2))
-    if listing.epc:
-        chips.append(("epc", "EPC %s" % listing.epc))
-    return "".join('<span class="chip %s">%s</span>' % (cls, html.escape(text))
-                   for cls, text in chips)
+        bedroom = [("est", label,
+                    _BEDROOM_ORIGIN.get(listing.bedrooms_source, "Estimated"))]
+    elif listing.bedrooms:
+        bedroom = [("", "%d bed" % listing.bedrooms, "")]
+    else:
+        bedroom = []
+    return _render_chips(bedroom + _chip_specs(listing, today))
 
 
 def links_html(listing: Listing) -> str:
@@ -130,8 +182,12 @@ def map_html(listing: Listing, tiles: TileRegistry) -> str:
 
 
 def counts_html(counts: dict) -> str:
+    # `availability_found` is only present on a rent search, and stating it
+    # matters: about half of Zimmo's rentals publish no date, so a card with no
+    # chip is otherwise ambiguous between "none published" and "never looked".
     order = [("immoweb", "Immoweb"), ("zimmo", "Zimmo"), ("merged", "after dedupe"),
-             ("after_filter", "matching"), ("shown", "shown")]
+             ("after_filter", "matching"), ("shown", "shown"),
+             ("availability_found", "with a date")]
     return "".join('<span class="count"><b>%s</b> %s</span>' % (counts[k], label)
                    for k, label in order if k in counts)
 
@@ -155,6 +211,7 @@ def build(data: dict, fetcher, embed_assets: bool = True) -> tuple[str, dict]:
 
     embedder = Embedder(fetcher, enabled=embed_assets)
     tiles = TileRegistry(embedder, reject=maps.is_placeholder_tile)
+    today = report_date(data)
 
     cards = []
     for raw in data.get("listings", []):
@@ -168,7 +225,7 @@ def build(data: dict, fetcher, embed_assets: bool = True) -> tuple[str, dict]:
             "CITY": " · ".join(x for x in ("%s %s" % (listing.postcode or "",
                                                       listing.locality or ""),
                                            listing.agency) if x and x.strip()),
-            "CHIPS": chips_html(listing),
+            "CHIPS": chips_html(listing, today),
             "LINKS": links_html(listing),
             "MAP": map_html(listing, tiles),
         }))

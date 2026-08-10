@@ -40,6 +40,9 @@ class Criteria:
     limit: int = 0          # 0 = keep everything that matched
     max_pages: int = 25
     max_enrich: int = 40   # listing pages read to recover missing bedroom counts
+    # Listing pages read for an availability date, 0 to skip. Only ever spent on
+    # rentals, and only on listings that survived the filter -- see run_search.
+    max_availability: int = 200
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -96,6 +99,13 @@ class Listing:
     # "detail" / "subtype" / "description" when recovered from the listing page.
     # Anything but "listed" is shown as an estimate rather than a fact.
     bedrooms_source: str | None = None
+    # When the property is free, read from the listing page (neither site puts
+    # it in search results). `available_from` is an ISO date exactly as
+    # published and may be in the past; `available_immediately` is the sites'
+    # separate "move in now" state, which carries no date. Display only --
+    # deliberately absent from `matches`.
+    available_from: str | None = None
+    available_immediately: bool = False
 
     def __post_init__(self):
         """Normalise "absent" sentinels to None.

@@ -40,6 +40,21 @@ we take `mediumUrl`), and `customerName` for the agency.
 **No EPC** in the list payload. It would need a detail-page fetch per listing;
 we take it from Zimmo on merge instead.
 
+**No availability either** — verified against a live `for-rent` search, whose
+`transaction` object carries only `type` and `rental`. The detail page
+`https://www.immoweb.be/en/classified/{id}` has it, in the classified JSON:
+
+| Field | Values seen |
+|---|---|
+| `transaction.availabilityDate` | `"2026-09-01"`, or `null` |
+| `transaction.availabilityPeriodType` | `"IMMEDIATELY"`, or `null` |
+
+Match the **unescaped** JSON only. The same page also carries the whole blob a
+second time HTML-escaped (`&quot;availabilityDate&quot;:…`) and a translation
+dictionary defining `"available_date":"Available date"` — a looser pattern
+returns a UI label as a date. Only `IMMEDIATELY` is date-equivalent; the other
+period types are conditions.
+
 **Promoted listings ignore the criteria.** A query for `minLandSurface=100&
 maxPrice=500000&orderBy=cheapest` returns, as its first result, a €499,000 house
 with `landSurface: 0`. This is why filters are re-applied locally.
@@ -106,6 +121,20 @@ bundle. If Zimmo's page format ever changes, that's the first place to look.
 report. Same for `slaapkamers` and `b_woonopp`.
 
 **No land surface** in the list payload.
+
+**Availability lives on the detail page**, in the same `feature-label` /
+`feature-value` table `enrich.parse_features` already reads for bedroom
+recovery, under the label **`Vrij op`**. Sampling 18 Gent rentals: 9 published
+nothing, 7 gave `DD/MM/YYYY`, 2 gave `onmiddellijk`.
+
+Dates are **day-first**. Read as month-first, `01/10/2026` becomes 10 January and
+looks entirely plausible doing it, which is why the parser is tested with `13/09`
+— a day that cannot be a month. `in overleg` (by arrangement) is a real value
+naming no date, and must stay unparsed rather than becoming "available now".
+
+Zimmo republishes stale adverts: a live run in August 2026 returned dates as old
+as `01/03/2025`. Anything on or before the report's own generation date renders
+as "Free now".
 
 ---
 

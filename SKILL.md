@@ -50,6 +50,7 @@ second run is fast.
 | "best value" | `--sort price_per_m2` |
 | "biggest first" | `--sort surface` |
 | "just the top 20" | `--limit 20` (no cap by default) |
+| "quickly" / "don't bother with move-in dates" | `--no-availability` (rent searches only — see Limits) |
 
 Postcodes are Belgian 4-digit codes. If the user names a town you don't have a
 postcode for, ask rather than guess — a wrong postcode silently returns another
@@ -61,11 +62,15 @@ town's houses.
 
 ```
 raw 814 (immoweb 122, zimmo 692) -> merged 568 -> matching 155 -> shown 155
+availability: 98 of 147 listings published a date
 ```
 
 - **raw → merged**: cross-site duplicates and repeated promoted listings collapsing
 - **merged → matching**: your filters applied
 - **matching → shown**: identical unless you passed `--limit`
+- **availability**: rent searches only. The shortfall is listings that publish no
+  date, not listings that were skipped — quote it, so a card with no date chip
+  isn't mistaken for one nobody checked.
 
 If `matching` is 0, say so plainly and quote the pre-filter counts — that
 distinguishes "nothing like this exists" from "your filter was too tight".
@@ -101,6 +106,18 @@ re-verify.
   never as if the site had published them.
 - **EPC is display-only**, not filterable. It comes from Zimmo; Immoweb-only
   listings won't have one.
+- **Availability is read on rent searches only, and is display-only.** Neither
+  site puts it in search results, so it costs one listing-page read each — about
+  a request per second on a cold cache, which roughly doubles the time of a rent
+  search. It runs after filtering and `--limit`, so nothing is spent on a listing
+  that won't appear; `--max-availability` caps it (default 200) and
+  `--no-availability` skips it. Sale searches never pay for it, since the answer
+  there is "at deed". Expect around two thirds of rentals to publish something.
+- **An availability date that has already passed renders as "Free now."** Adverts
+  go stale — a sixth of the dates in a typical run are in the past, some by a
+  year — and printing them literally reads as a bug rather than as an old advert.
+  The published value is in the chip's tooltip, so quote that if the user asks
+  why a flat says "now".
 - **Zimmo has no server-side price filter**, so a broad postcode means fetching
   every page for that town. `--max-pages` (default 25) caps it and warns when it
   bites.

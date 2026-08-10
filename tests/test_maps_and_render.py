@@ -3,6 +3,7 @@
 import json
 import sys
 import unittest
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -10,6 +11,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import build_report
 from homefinder import maps
+from homefinder.model import Listing
 from homefinder.render import TileRegistry, data_uri, render, sniff_mime
 
 # Elfjulistraat 63, Gent. Tile numbers cross-checked against the canonical OSM
@@ -208,6 +210,108 @@ class TestReportBuild(unittest.TestCase):
         data = dict(self.data, listings=[])
         html, _ = build_report.build(data, fetcher=None, embed_assets=False)
         self.assertIn("No listings matched", html)
+        self.assertNotIn("{{", html)
+
+
+class TestAvailabilityChip(unittest.TestCase):
+    """The chip answers "when can I move in?", so a date already in the past
+    must not read as a future one, and "now" must not be confused with silence."""
+
+    TODAY = date(2026, 8, 10)
+
+    def chip(self, **kw):
+        return build_report.availability_chip(Listing(**kw), self.TODAY)
+
+    def test_a_date_later_this_year_omits_the_year(self):
+        text, title = self.chip(available_from="2026-09-01")
+        self.assertEqual(text, "Free 1 Sep")
+        self.assertIn("2026-09-01", title)
+
+    def test_a_date_in_another_year_keeps_it(self):
+        text, _ = self.chip(available_from="2027-01-15")
+        self.assertEqual(text, "Free 15 Jan 2027")
+
+    def test_immediately_reads_as_free_now(self):
+        text, title = self.chip(available_immediately=True)
+        self.assertEqual(text, "Free now")
+        self.assertIn("immediately", title.lower())
+
+    def test_a_date_that_has_passed_reads_as_free_now(self):
+        """Zimmo really does serve 15/06/2026 in August. The flat is free; the
+        advert is just stale. Printing the past date would look like a bug."""
+        text, title = self.chip(available_from="2026-06-15")
+        self.assertEqual(text, "Free now")
+        self.assertIn("2026-06-15", title)
+
+    def test_available_today_is_free_now_not_a_date(self):
+        text, _ = self.chip(available_from="2026-08-10")
+        self.assertEqual(text, "Free now")
+
+    def test_nothing_published_means_no_chip(self):
+        self.assertIsNone(self.chip())
+
+    def test_an_unparseable_date_means_no_chip(self):
+        """Rather than crash a whole report over one malformed field."""
+        self.assertIsNone(self.chip(available_from="soon"))
+
+
+class TestAvailabilityInChipRow(unittest.TestCase):
+    TODAY = date(2026, 8, 10)
+
+    def test_it_renders_beside_the_other_chips(self):
+        out = build_report.chips_html(
+            Listing(bedrooms=2, bedrooms_source="listed", habitable_m2=80,
+                    epc="237", available_immediately=True), self.TODAY)
+        for expected in ("2 bed", "80 m²", "EPC 237", "Free now"):
+            self.assertIn(expected, out)
+
+    def test_an_estimated_bedroom_count_does_not_swallow_it(self):
+        """The estimated-bedroom path renders its chip separately and then
+        appends the rest. A second copy of that list is how the availability
+        chip would silently vanish from exactly the listings we enriched."""
+        out = build_report.chips_html(
+            Listing(bedrooms=2, bedrooms_source="description", epc="237",
+                    available_from="2026-09-01"), self.TODAY)
+        self.assertIn("~2 bed", out)
+        self.assertIn("Free 1 Sep", out)
+
+
+class TestAvailabilityCoverageIsStated(unittest.TestCase):
+    def test_the_header_says_how_many_listings_published_a_date(self):
+        """Roughly half of Zimmo's rentals publish nothing, so a card with no
+        chip is ambiguous between 'no date' and 'not looked up'. The count
+        disambiguates it for the whole report."""
+        out = build_report.counts_html(
+            {"merged": 20, "after_filter": 10, "shown": 10,
+             "availability_found": 6})
+        self.assertIn("6", out)
+        self.assertIn("with a date", out)
+
+    def test_a_sale_report_says_nothing_about_availability(self):
+        out = build_report.counts_html({"merged": 20, "shown": 10})
+        self.assertNotIn("with a date", out)
+
+
+class TestReportDateIsNotTheClock(unittest.TestCase):
+    def test_the_chip_is_dated_from_generated_at_not_today(self):
+        """A report rebuilt months later must render identically -- which also
+        means these tests never go stale as the real date moves."""
+        data = {
+            "generated_at": "2026-08-10T12:00:00+02:00",
+            "criteria": {"postcodes": ["9000"]}, "counts": {}, "warnings": [],
+            "listings": [{"sources": {"zimmo": {"url": "https://zimmo/A"}},
+                          "price": 1000, "postcode": "9000",
+                          "available_from": "2026-09-01", "images": []}],
+        }
+        html, _ = build_report.build(data, fetcher=None, embed_assets=False)
+        self.assertIn("Free 1 Sep", html)
+
+    def test_a_report_with_no_generation_date_still_builds(self):
+        data = {"criteria": {}, "counts": {}, "warnings": [],
+                "listings": [{"sources": {}, "available_immediately": True,
+                              "images": []}]}
+        html, _ = build_report.build(data, fetcher=None, embed_assets=False)
+        self.assertIn("Free now", html)
         self.assertNotIn("{{", html)
 
 

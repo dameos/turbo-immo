@@ -16,10 +16,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from homefinder import immoweb, zimmo
+from homefinder import enrich, immoweb, zimmo
 from homefinder.fetch import Fetcher, default_cache_dir
 from homefinder.merge import merge, rank
-from homefinder.model import APARTMENT, HOUSE, Criteria
+from homefinder.model import APARTMENT, HOUSE, RENT, Criteria
 
 SOURCES = {"immoweb": immoweb.search, "zimmo": zimmo.search}
 
@@ -52,6 +52,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--max-enrich", type=int, default=40,
                    help="max listing pages read to recover a missing bedroom "
                         "count (default 40; 0 disables)")
+    p.add_argument("--max-availability", type=int, default=200,
+                   help="max listing pages read for an availability date, "
+                        "rentals only (default 200; 0 disables)")
+    p.add_argument("--no-availability", dest="max_availability",
+                   action="store_const", const=0,
+                   help="skip the availability lookup entirely")
     p.add_argument("--source", action="append", choices=sorted(SOURCES),
                    help="restrict to one source; repeat to add (default: both)")
     p.add_argument("--out", default="listings.json", help="output JSON path")
@@ -102,6 +108,16 @@ def run_search(c: Criteria, fetcher, sources, enrich_bedrooms=True) -> dict:
     # No cap by default: a house-hunter wants every match, and an arbitrary
     # cutoff hides listings without saying which ones.
     limited = ranked[:c.limit] if c.limit else ranked
+
+    # Availability is display-only, so unlike bedroom recovery this runs last --
+    # after the filter and after --limit, so no request is spent on a listing
+    # that won't appear. Rentals only: on a sale listing the answer is "at deed",
+    # which isn't worth a page read each.
+    if c.transaction == RENT and c.max_availability:
+        fetcher.log("reading availability (%d listing pages)..." % len(limited))
+        stats = enrich.fill_availability(limited, fetcher, warn, c.max_availability)
+        counts["availability_lookups"] = stats["fetched"]
+        counts["availability_found"] = stats["resolved"]
 
     counts.update({"raw_total": len(raw), "merged": len(merged),
                    "after_filter": len(kept), "shown": len(limited)})
@@ -166,6 +182,7 @@ def main(argv=None) -> int:
         min_surface=args.min_surface, max_surface=args.max_surface,
         min_land=args.min_land, sort=args.sort, limit=args.limit,
         max_pages=args.max_pages, max_enrich=args.max_enrich,
+        max_availability=args.max_availability,
     )
     sources = sorted(set(args.source)) if args.source else sorted(SOURCES)
 
@@ -188,6 +205,9 @@ def main(argv=None) -> int:
                 % (counts["raw_total"], counts.get("immoweb", "-"),
                    counts.get("zimmo", "-"), counts["merged"],
                    counts["after_filter"], counts["shown"]))
+    if "availability_lookups" in counts:
+        fetcher.log("  availability: %d of %d listings published a date"
+                    % (counts["availability_found"], counts["availability_lookups"]))
     fetcher.log("  cache: %d hit, %d fetched" % (fetcher.stats["hits"],
                                                  fetcher.stats["misses"]))
     return 0

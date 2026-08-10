@@ -8,7 +8,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from homefinder.merge import merge, rank
-from homefinder.model import APARTMENT, HOUSE, Criteria, Listing, norm_street
+from homefinder.model import (APARTMENT, HOUSE, RENT, SALE, Criteria, Listing,
+                              norm_street)
 
 
 def iw(**kw):
@@ -167,6 +168,83 @@ class TestResultCap(unittest.TestCase):
 
     def test_criteria_defaults_to_uncapped(self):
         self.assertEqual(Criteria(postcodes=["9000"]).limit, 0)
+
+
+class TestAvailabilitySweep(unittest.TestCase):
+    """Availability costs one request per listing, so *when* it runs matters as
+    much as what it parses: rentals only, and only for listings that will
+    actually appear on the report."""
+
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import search_homes
+        self.mod = search_homes
+        self.found = [
+            Listing(sources={"zimmo": {"url": "https://zimmo/%d" % i}},
+                    property_type=HOUSE, postcode="9000", price=1000 + i,
+                    bedrooms=2, habitable_m2=100, street="Str %d" % i)
+            for i in range(5)]
+        self.mod.SOURCES = {"stub": lambda c, f, w: [
+            Listing(**{k: v for k, v in vars(x).items()}) for x in self.found]}
+
+    class _Fetcher:
+        stats = {"hits": 0, "misses": 0, "errors": 0}
+
+        def __init__(self):
+            self.asked = []
+
+        def log(self, msg):
+            pass
+
+        def get_text(self, url, **kw):
+            self.asked.append(url)
+            return ('<ul><li><strong class="feature-label">Vrij op</strong>'
+                    '<span class="feature-value">01/09/2026</span></li></ul>')
+
+    def _run(self, **kw):
+        c = Criteria(postcodes=["9000"], property_types=[HOUSE], **kw)
+        f = self._Fetcher()
+        return self.mod.run_search(c, f, ["stub"]), f
+
+    def test_a_rent_search_reads_availability(self):
+        out, f = self._run(transaction=RENT)
+        self.assertEqual(len(f.asked), 5)
+        self.assertTrue(all(x["available_from"] == "2026-09-01"
+                            for x in out["listings"]))
+
+    def test_a_sale_search_does_not_pay_for_it(self):
+        """An availability date on a sale listing is 'at deed' -- not worth a
+        request per listing."""
+        out, f = self._run(transaction=SALE)
+        self.assertEqual(f.asked, [])
+        self.assertTrue(all(x["available_from"] is None for x in out["listings"]))
+
+    def test_zero_cap_turns_it_off(self):
+        out, f = self._run(transaction=RENT, max_availability=0)
+        self.assertEqual(f.asked, [])
+
+    def test_only_listings_that_will_be_shown_are_looked_up(self):
+        """It runs after --limit, unlike bedroom recovery which has to run
+        before filtering because it changes who passes."""
+        out, f = self._run(transaction=RENT, limit=2)
+        self.assertEqual(len(f.asked), 2)
+
+    def test_the_funnel_reports_what_it_cost_and_found(self):
+        out, _ = self._run(transaction=RENT)
+        self.assertEqual(out["counts"]["availability_lookups"], 5)
+        self.assertEqual(out["counts"]["availability_found"], 5)
+
+    def test_default_cap_is_generous_enough_for_a_normal_search(self):
+        self.assertGreaterEqual(Criteria(postcodes=["9000"]).max_availability, 150)
+
+    def test_no_availability_flag_is_the_same_as_a_zero_cap(self):
+        args = self.mod.build_parser().parse_args(["--postcode", "9000",
+                                             "--no-availability"])
+        self.assertEqual(args.max_availability, 0)
+
+    def test_the_cap_is_on_by_default_at_the_cli(self):
+        args = self.mod.build_parser().parse_args(["--postcode", "9000"])
+        self.assertGreaterEqual(args.max_availability, 150)
 
 
 class TestRank(unittest.TestCase):
