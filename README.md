@@ -38,6 +38,7 @@ or re-hitting the sites.
 --min-land
 --sort price|price_per_m2|surface|bedrooms
 --limit N              optional cap; by default every match is reported
+--max-enrich N         listing pages read to recover missing bedroom counts (default 40)
 --self-check           live PASS/FAIL per source
 ```
 

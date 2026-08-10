@@ -39,6 +39,7 @@ class Criteria:
     sort: str = "price"
     limit: int = 0          # 0 = keep everything that matched
     max_pages: int = 25
+    max_enrich: int = 40   # listing pages read to recover missing bedroom counts
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -91,6 +92,10 @@ class Listing:
     epc: str | None = None
     images: list[str] = field(default_factory=list)
     promoted: bool = False
+    # Where `bedrooms` came from: "listed" (in the search results), or one of
+    # "detail" / "subtype" / "description" when recovered from the listing page.
+    # Anything but "listed" is shown as an estimate rather than a fact.
+    bedrooms_source: str | None = None
 
     def __post_init__(self):
         """Normalise "absent" sentinels to None.
@@ -100,9 +105,14 @@ class Listing:
         surface get the same treatment. `land_m2` deliberately does not -- zero
         land is a true fact about an apartment, not a missing value.
         """
-        for name in ("price", "bedrooms", "habitable_m2"):
+        for name in ("price", "habitable_m2"):
             if (getattr(self, name) or 0) <= 0:
                 setattr(self, name, None)
+        # Zero bedrooms is "unpublished" when it came straight off a search
+        # result, but a real fact once something established it -- a studio
+        # genuinely has none, and that 0 must survive a JSON round-trip.
+        if (self.bedrooms or 0) <= 0 and not self.bedrooms_source:
+            self.bedrooms = None
 
     # -- derived ----------------------------------------------------------
 

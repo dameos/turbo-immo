@@ -123,6 +123,7 @@ def parse_property(p: dict) -> Listing:
         price=_int(p.get("prijs")),
         property_type=_TYPE_BACK.get(subtype),
         bedrooms=_int(p.get("slaapkamers")),
+        bedrooms_source="listed" if (_int(p.get("slaapkamers")) or 0) > 0 else None,
         habitable_m2=_int(p.get("b_woonopp")),
         land_m2=None,           # not exposed in the list payload
         street=(p.get("address") or "").strip() or None,
@@ -135,6 +136,43 @@ def parse_property(p: dict) -> Listing:
         images=images[:3],
         promoted=bool(p.get("isPromoted")),
     )
+
+
+def enrich_bedrooms(listings: list[Listing], fetcher, warn,
+                    max_fetches: int = 40) -> dict:
+    """Fill in bedroom counts from each listing's own detail page.
+
+    Only called for listings that already pass every other criterion and still
+    have no bedroom count, so the request count is proportional to the gap
+    rather than to the result set. One page per listing, throttled like any
+    other fetch and cached, so a re-run costs nothing.
+    """
+    from . import enrich
+
+    todo = [x for x in listings
+            if x.bedrooms is None and (x.sources.get("zimmo") or {}).get("url")]
+    stats = {"considered": len(todo), "fetched": 0, "resolved": 0, "capped": 0}
+
+    if len(todo) > max_fetches:
+        stats["capped"] = len(todo) - max_fetches
+        warn("zimmo: %d listings lack a bedroom count; only the first %d were "
+             "looked up (--max-enrich)" % (len(todo), max_fetches))
+        todo = todo[:max_fetches]
+
+    for listing in todo:
+        url = listing.sources["zimmo"]["url"]
+        try:
+            page = fetcher.get_text(url)
+        except Exception as e:
+            warn("zimmo: could not read %s: %s" % (url, e))
+            continue
+        stats["fetched"] += 1
+        count, source = enrich.bedrooms_from_page(page)
+        if count is not None:
+            listing.bedrooms = count
+            listing.bedrooms_source = source
+            stats["resolved"] += 1
+    return stats
 
 
 def search(c: Criteria, fetcher, warn) -> list[Listing]:

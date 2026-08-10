@@ -55,10 +55,37 @@ def photos_html(listing: Listing, embed) -> str:
     return "".join(out)
 
 
+# How a bedroom count that wasn't in the search results was established.
+_BEDROOM_ORIGIN = {
+    "detail": "Not in the search results; read from the listing page",
+    "subtype": "Not published; the listing page calls this a studio",
+    "description": "Not published; inferred from the listing description",
+}
+
+
 def chips_html(listing: Listing) -> str:
     chips = []
+    if listing.bedrooms is not None and listing.bedrooms_source != "listed":
+        # Never render a recovered figure as if the site had published it.
+        label = "studio" if listing.bedrooms == 0 else "~%d bed" % listing.bedrooms
+        note = _BEDROOM_ORIGIN.get(listing.bedrooms_source, "Estimated")
+        return ('<span class="chip est" title="%s">%s</span>' % (html.escape(note), label)
+                + _rest_of_chips(listing))
     if listing.bedrooms:
         chips.append(("", "%d bed" % listing.bedrooms))
+    if listing.habitable_m2:
+        chips.append(("", "%d m²" % listing.habitable_m2))
+    if listing.land_m2:
+        chips.append(("", "%d m² land" % listing.land_m2))
+    if listing.epc:
+        chips.append(("epc", "EPC %s" % listing.epc))
+    return "".join('<span class="chip %s">%s</span>' % (cls, html.escape(text))
+                   for cls, text in chips)
+
+
+def _rest_of_chips(listing: Listing) -> str:
+    """The non-bedroom chips, for when the bedroom chip is rendered separately."""
+    chips = []
     if listing.habitable_m2:
         chips.append(("", "%d m²" % listing.habitable_m2))
     if listing.land_m2:

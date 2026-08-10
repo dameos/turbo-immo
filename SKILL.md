@@ -91,6 +91,12 @@ re-verify.
 - **A missing value never excludes a listing.** A house that doesn't publish its
   bedroom count still appears in a `--min-bedrooms 3` search, with a gap on the
   card. Dropping real houses over a missing field is the worse failure.
+- **Missing bedroom counts are recovered before filtering.** For listings that
+  pass every other criterion but have no bedroom count, the listing page is read
+  for its feature table, its subtype (a studio is a hard 0) and finally its
+  description. Capped by `--max-enrich` (default 40, `0` disables). Recovered
+  figures render as `~2 bed` in orange with a tooltip naming their origin --
+  never as if the site had published them.
 - **EPC is display-only**, not filterable. It comes from Zimmo; Immoweb-only
   listings won't have one.
 - **Zimmo has no server-side price filter**, so a broad postcode means fetching

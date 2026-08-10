@@ -79,6 +79,7 @@ def parse_results(payload: dict) -> list[Listing]:
             price=_int(price),
             property_type=_TYPE_BACK.get(prop.get("type")),
             bedrooms=_int(prop.get("bedroomCount")),
+            bedrooms_source="listed" if _int(prop.get("bedroomCount")) else None,
             habitable_m2=_int(prop.get("netHabitableSurface")),
             land_m2=_int(prop.get("landSurface")),
             street=street or None,

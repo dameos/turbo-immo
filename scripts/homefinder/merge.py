@@ -8,6 +8,9 @@ from .model import Criteria, Listing
 #   Immoweb: structured numbers and real coordinates.
 #   Zimmo:   the EPC label, which Immoweb's list payload doesn't carry at all.
 _PREFER_IMMOWEB = ("lat", "lon", "land_m2", "habitable_m2", "bedrooms", "price")
+# bedrooms and its provenance must travel together or a recovered count
+# gets shown as if the site had published it.
+_BEDROOM_FIELDS = ("bedrooms", "bedrooms_source")
 
 
 def merge(listings: list[Listing]) -> list[Listing]:
@@ -60,7 +63,7 @@ def _absorb(target: Listing, other: Listing) -> None:
 
     has_immoweb = "immoweb" in target.sources
     for fieldname in Listing.__dataclass_fields__:
-        if fieldname in ("sources", "images", "promoted"):
+        if fieldname in ("sources", "images", "promoted") + _BEDROOM_FIELDS:
             continue
         current = getattr(target, fieldname)
         incoming = getattr(other, fieldname)
@@ -70,6 +73,16 @@ def _absorb(target: Listing, other: Listing) -> None:
             setattr(target, fieldname, incoming)
         elif fieldname in _PREFER_IMMOWEB and not has_immoweb:
             setattr(target, fieldname, incoming)
+
+    # Bedrooms are merged as a unit with their provenance, and excluded from the
+    # loop above: setting the count there would strip the source, and a recovered
+    # figure would then render as if the site had published it.
+    take_other = other.bedrooms is not None and (
+        target.bedrooms is None
+        or (not has_immoweb and other.bedrooms_source == "listed"))
+    if take_other:
+        target.bedrooms = other.bedrooms
+        target.bedrooms_source = other.bedrooms_source
 
     # Immoweb images first (300px, ~4x smaller than Zimmo's 828px), then top up
     # from the other source if we're short of three.

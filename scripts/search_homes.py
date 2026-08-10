@@ -49,6 +49,9 @@ def build_parser() -> argparse.ArgumentParser:
                         "every match is reported)")
     p.add_argument("--max-pages", type=int, default=25,
                    help="page cap per source per postcode (default 25)")
+    p.add_argument("--max-enrich", type=int, default=40,
+                   help="max listing pages read to recover a missing bedroom "
+                        "count (default 40; 0 disables)")
     p.add_argument("--source", action="append", choices=sorted(SOURCES),
                    help="restrict to one source; repeat to add (default: both)")
     p.add_argument("--out", default="listings.json", help="output JSON path")
@@ -62,7 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
-def run_search(c: Criteria, fetcher, sources) -> dict:
+def run_search(c: Criteria, fetcher, sources, enrich_bedrooms=True) -> dict:
     warnings: list[str] = []
 
     def warn(msg: str) -> None:
@@ -81,6 +84,19 @@ def run_search(c: Criteria, fetcher, sources) -> dict:
         raw += found
 
     merged = merge(raw)
+
+    # Recover missing bedroom counts before filtering, not after: the whole
+    # point is that a studio with no published count should fail --min-bedrooms
+    # instead of sailing through it. Only listings that already satisfy every
+    # other criterion are looked up, so the cost tracks the gap, not the corpus.
+    if enrich_bedrooms and c.max_enrich:
+        gap = [x for x in merged if x.bedrooms is None and x.matches(c)]
+        if gap:
+            fetcher.log("filling bedroom gaps (%d listing pages)..." % len(gap))
+            stats = zimmo.enrich_bedrooms(gap, fetcher, warn, c.max_enrich)
+            counts["bedroom_lookups"] = stats["fetched"]
+            counts["bedrooms_recovered"] = stats["resolved"]
+
     kept = [x for x in merged if x.matches(c)]
     ranked = rank(kept, c)
     # No cap by default: a house-hunter wants every match, and an arbitrary
@@ -142,7 +158,7 @@ def main(argv=None) -> int:
         min_bedrooms=args.min_bedrooms, max_bedrooms=args.max_bedrooms,
         min_surface=args.min_surface, max_surface=args.max_surface,
         min_land=args.min_land, sort=args.sort, limit=args.limit,
-        max_pages=args.max_pages,
+        max_pages=args.max_pages, max_enrich=args.max_enrich,
     )
     sources = sorted(set(args.source)) if args.source else sorted(SOURCES)
 
