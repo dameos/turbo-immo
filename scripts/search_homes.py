@@ -119,9 +119,16 @@ def run_search(c: Criteria, fetcher, sources, enrich_bedrooms=True) -> dict:
     }
 
 
-def self_check(fetcher) -> int:
-    """Live smoke test. Scrapers rot silently; this says so out loud."""
-    c = Criteria(postcodes=["9000"], property_types=[HOUSE], limit=5, max_pages=1)
+def self_check(fetcher, postcodes=None, types=None) -> int:
+    """Live smoke test. Scrapers rot silently; this says so out loud.
+
+    Probes whatever postcode you pass; falls back to a large city only because
+    the check needs somewhere guaranteed to have listings, not because anything
+    else in this tool is tied to one place.
+    """
+    c = Criteria(postcodes=postcodes or ["1000"],
+                 property_types=types or [HOUSE], limit=5, max_pages=1)
+    print("probing %s in %s" % ("/".join(c.property_types), ", ".join(c.postcodes)))
     failures = 0
     for name, fn in SOURCES.items():
         notes: list[str] = []
@@ -145,7 +152,7 @@ def main(argv=None) -> int:
         fetcher._read_cache = lambda url, ttl: None
 
     if args.self_check:
-        return self_check(fetcher)
+        return self_check(fetcher, args.postcodes, args.types)
 
     if not args.postcodes:
         build_parser().error("--postcode is required (repeat it for several)")
