@@ -22,12 +22,14 @@ or the Python — never patch the generated file.
 Always both steps, in order:
 
 ```bash
-python scripts/search_homes.py --postcode 9000 [filters] --out reports/<slug>/listings.json
-python scripts/build_report.py reports/<slug>/listings.json --out reports/<slug>/report.html
+python3 <skill>/scripts/search_homes.py --postcode 9000 [filters] --out reports/<slug>/listings.json
+python3 <skill>/scripts/build_report.py reports/<slug>/listings.json --out reports/<slug>/report.html
 ```
 
-Use `reports/YYYY-MM-DD-<place>/` for `<slug>`. Then tell the user the counts and
-the path to the report.
+`<skill>` is this skill's base directory, which is not the working directory —
+the scripts must be addressed by that path, while `--out` stays relative so the
+report lands in the user's project. Use `reports/YYYY-MM-DD-<place>/` for
+`<slug>`. Then tell the user the counts and the path to the report.
 
 Searching and rendering are separate on purpose: re-running `build_report.py`
 restyles a report without re-hitting the sites, and every asset is cached, so the
@@ -75,8 +77,8 @@ complete.
 ## When something breaks
 
 ```bash
-python scripts/search_homes.py --self-check    # live PASS/FAIL per source
-python -m unittest discover -s tests           # offline, against saved fixtures
+python3 <skill>/scripts/search_homes.py --self-check      # live PASS/FAIL per source
+cd <skill> && python3 -m unittest discover -s tests       # offline, against saved fixtures
 ```
 
 Scrapers rot. `--self-check` is the fast answer to "is it me or is it them".
