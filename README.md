@@ -37,7 +37,7 @@ or re-hitting the sites.
 --min-surface / --max-surface   habitable m²
 --min-land
 --sort price|price_per_m2|surface|bedrooms
---limit N              default 60
+--limit N              optional cap; by default every match is reported
 --self-check           live PASS/FAIL per source
 ```
 

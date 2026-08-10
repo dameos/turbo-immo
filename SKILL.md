@@ -47,7 +47,7 @@ second run is fast.
 | "cheapest first" (default) | `--sort price` |
 | "best value" | `--sort price_per_m2` |
 | "biggest first" | `--sort surface` |
-| "show me more" | `--limit 100` (default 60) |
+| "just the top 20" | `--limit 20` (no cap by default) |
 
 Postcodes are Belgian 4-digit codes. If the user names a town you don't have a
 postcode for, ask rather than guess — a wrong postcode silently returns another
@@ -58,12 +58,12 @@ town's houses.
 `search_homes.py` prints the funnel, and the report repeats it in the header:
 
 ```
-raw 814 (immoweb 122, zimmo 692) -> merged 568 -> matching 155 -> shown 60
+raw 814 (immoweb 122, zimmo 692) -> merged 568 -> matching 155 -> shown 155
 ```
 
 - **raw → merged**: cross-site duplicates and repeated promoted listings collapsing
 - **merged → matching**: your filters applied
-- **matching → shown**: the `--limit` cap
+- **matching → shown**: identical unless you passed `--limit`
 
 If `matching` is 0, say so plainly and quote the pre-filter counts — that
 distinguishes "nothing like this exists" from "your filter was too tight".
@@ -96,5 +96,9 @@ re-verify.
 - **Zimmo has no server-side price filter**, so a broad postcode means fetching
   every page for that town. `--max-pages` (default 25) caps it and warns when it
   bites.
-- The report is **6–10 MB** for 60 listings because photos and map tiles are
-  embedded. That's what makes it work offline and survive delisting.
+- **Every match is reported.** There is no default cap — `--limit N` is there if
+  you want one. Budget roughly **150 KB per listing**, since photos and map tiles
+  are embedded: ~15 MB for 100 listings, ~45 MB for 300. That's the price of a
+  report that works offline and survives delisting. Warn the user before
+  generating a report over a few hundred listings, and suggest tightening the
+  filters instead of capping — a cap hides matches without saying which.

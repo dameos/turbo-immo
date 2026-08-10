@@ -133,6 +133,42 @@ class TestAbsentValueSentinels(unittest.TestCase):
         self.assertEqual(out[0].price, 250000)
 
 
+class TestResultCap(unittest.TestCase):
+    """`--limit` is opt-in. An arbitrary default cutoff hid matching listings
+    without saying which ones, which is the opposite of useful when house-hunting."""
+
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import search_homes
+        self.mod = search_homes
+        self.found = [iw(property_type=HOUSE, postcode="9000", price=100000 + i,
+                         bedrooms=2, habitable_m2=100, street="Str %d" % i)
+                      for i in range(25)]
+        self.mod.SOURCES = {"stub": lambda c, f, w: list(self.found)}
+
+    class _Fetcher:
+        stats = {"hits": 0, "misses": 0, "errors": 0}
+        def log(self, msg): pass
+
+    def _run(self, **kw):
+        c = Criteria(postcodes=["9000"], property_types=[HOUSE], **kw)
+        return self.mod.run_search(c, self._Fetcher(), ["stub"])
+
+    def test_default_keeps_every_match(self):
+        out = self._run()
+        self.assertEqual(out["counts"]["shown"], 25)
+        self.assertEqual(out["counts"]["after_filter"], 25)
+        self.assertEqual(out["warnings"], [])
+
+    def test_explicit_limit_still_caps_and_says_so(self):
+        out = self._run(limit=10)
+        self.assertEqual(out["counts"]["shown"], 10)
+        self.assertTrue(any("--limit 10" in w for w in out["warnings"]))
+
+    def test_criteria_defaults_to_uncapped(self):
+        self.assertEqual(Criteria(postcodes=["9000"]).limit, 0)
+
+
 class TestRank(unittest.TestCase):
     def test_cheapest_first_with_unpriced_last(self):
         c = Criteria(postcodes=["9000"], sort="price")

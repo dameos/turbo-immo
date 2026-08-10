@@ -44,7 +44,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--min-land", type=int, help="minimum land m2")
     p.add_argument("--sort", choices=["price", "price_per_m2", "surface", "bedrooms"],
                    default="price")
-    p.add_argument("--limit", type=int, default=60, help="max listings kept (default 60)")
+    p.add_argument("--limit", type=int, default=0,
+                   help="cap the number of listings kept (default 0 = no cap; "
+                        "every match is reported)")
     p.add_argument("--max-pages", type=int, default=25,
                    help="page cap per source per postcode (default 25)")
     p.add_argument("--source", action="append", choices=sorted(SOURCES),
@@ -81,13 +83,15 @@ def run_search(c: Criteria, fetcher, sources) -> dict:
     merged = merge(raw)
     kept = [x for x in merged if x.matches(c)]
     ranked = rank(kept, c)
-    limited = ranked[:c.limit]
+    # No cap by default: a house-hunter wants every match, and an arbitrary
+    # cutoff hides listings without saying which ones.
+    limited = ranked[:c.limit] if c.limit else ranked
 
     counts.update({"raw_total": len(raw), "merged": len(merged),
                    "after_filter": len(kept), "shown": len(limited)})
     if len(ranked) > len(limited):
-        warnings.append("%d listings matched but only %d shown (--limit)"
-                        % (len(ranked), len(limited)))
+        warnings.append("%d listings matched but only %d shown (--limit %d)"
+                        % (len(ranked), len(limited), c.limit))
 
     return {
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),

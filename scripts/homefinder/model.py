@@ -37,7 +37,7 @@ class Criteria:
     max_surface: int | None = None
     min_land: int | None = None
     sort: str = "price"
-    limit: int = 60
+    limit: int = 0          # 0 = keep everything that matched
     max_pages: int = 25
 
     def to_dict(self) -> dict:
